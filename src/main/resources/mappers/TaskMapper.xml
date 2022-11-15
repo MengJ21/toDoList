@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meng.todolist.mapper.TaskMapper">
+    <select id="getAllTask" resultType="com.meng.todolist.entity.Task">
+        select * from task
+    </select>
+    <delete id="deleteTaskById">
+        delete from task where task_id = 2
+    </delete>
+    <insert id="insertTask" parameterType="com.meng.todolist.entity.Task" useGeneratedKeys="true" keyProperty="taskId">
+        insert into task values (#{task.name},#{task.status},#{task.startTime},#{task.endTime},null)
+    </insert>
+</mapper>
