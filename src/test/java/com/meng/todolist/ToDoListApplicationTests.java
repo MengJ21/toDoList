@@ -43,5 +43,21 @@ class ToDoListApplicationTests {
         Integer taskId = task.getTaskId();
         System.out.println(taskId);
     }
+    @Test
+    void testSelectByDate() {
+        List<Task> allTask = taskMapper.getAllTaskByDate("2022-11-15");
+        for (Task task: allTask) {
+            System.out.println("--------------------------------------------------------------------------------------------------------------------");
+            System.out.println(task.toString());
+        }
+    }
+    @Test
+    void testDeleteById() {
+        int i = taskMapper.deleteTaskById(8);
+    }
+    @Test
+    void testUpdateTaskStatus() {
+        taskMapper.setStatus(true,1);
 
+    }
 }

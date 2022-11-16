@@ -30,4 +30,26 @@ public class TaskController {
         iTaskService.insertTask(task);
         return Result.ok("插入成功");
     }
+    /*
+     * 根据日期查询任务
+     **/
+    @GetMapping("findTaskByDate/{date}")
+    public Result findTaskByDate(@PathVariable("date") String date) {
+        List<Task> allTaskByDate = iTaskService.findAllTaskByDate(date);
+        return Result.ok("获取" + date + "号数据成功", allTaskByDate);
+    }
+    /*
+     * 根据id删除任务。
+     **/
+    @DeleteMapping("delete/{taskId}")
+    public Result deleteTaskById(@PathVariable("taskId") int taskId) {
+        int i = iTaskService.deleteTask(taskId);
+        return Result.ok("删除成功" + i + "行受影响");
+    }
+
+    @GetMapping("setStatus/{status}/{taskId}")
+    public Result setStatus(@PathVariable("status") boolean status, @PathVariable("taskId") int taskId) {
+        iTaskService.updateStatus(status,taskId);
+        return Result.ok("修改成功！");
+    }
 }

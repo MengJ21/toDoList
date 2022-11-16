@@ -6,10 +6,16 @@
     <select id="getAllTask" resultType="com.meng.todolist.entity.Task">
         select * from task
     </select>
+    <select id="getAllTaskByDate" resultType="Task">
+        select * from task where #{startTime} >= start_time and end_time >= #{startTime};
+    </select>
     <delete id="deleteTaskById">
-        delete from task where task_id = 2
+        delete from task where task_id = #{taskId}
     </delete>
     <insert id="insertTask" parameterType="com.meng.todolist.entity.Task" useGeneratedKeys="true" keyProperty="taskId">
         insert into task values (#{task.name},#{task.status},#{task.startTime},#{task.endTime},null)
     </insert>
+    <update id="setStatus">
+        update task set status = #{status} where task_id = #{taskId}
+    </update>
 </mapper>

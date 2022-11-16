@@ -28,4 +28,19 @@ public class ITaskServiceImpl implements ITaskService {
     public void insertTask(Task task) {
         taskMapper.insertTask(task);
     }
+
+    @Override
+    public List<Task> findAllTaskByDate(String date) {
+        return taskMapper.getAllTaskByDate(date);
+    }
+
+    @Override
+    public int deleteTask(int taskId) {
+        return taskMapper.deleteTaskById(taskId);
+    }
+
+    @Override
+    public void updateStatus(boolean status, int taskId) {
+        taskMapper.setStatus(status,taskId);
+    }
 }
