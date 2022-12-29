@@ -11,3 +11,11 @@ mybatis:
     map-underscore-to-camel-case: true
 server:
   port: 8080
+config:
+  jwt:
+    #加密密钥
+    secret: zhou20011006?
+    #token有效时长
+    expire: 3600
+    # header 名称
+    header: token

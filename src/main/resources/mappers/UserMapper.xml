@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meng.todolist.mapper.UserMapper">
+    <select id="getUserByUserNameAndPassword" resultType="User">
+        select * from users where username = #{username} and password = #{password}
+    </select>
+    <select id="getUserByUId" resultType="User">
+        select * from users where u_id = #{uId}
+    </select>
+    <insert id="insertUser">
+        insert into users values (null, #{username},#{password})
+    </insert>
+</mapper>

@@ -3,19 +3,70 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.meng.todolist.mapper.TaskMapper">
-    <select id="getAllTask" resultType="com.meng.todolist.entity.Task">
+    <resultMap id="getTaskWithUserWithType" type="Task">
+        <id property="taskId" column="task_id"/>
+        <result property="name" column="name"/>
+        <result property="status" column="status"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="expired" column="expired"/>
+        <result property="uId" column="u_id"/>
+        <result property="typeId" column="type_id"/>
+        <association property="taskType"
+                     select="com.meng.todolist.mapper.TaskTypeMapper.findTypeByTypeId"
+                     column="type_id">
+        </association>
+<!--        <association property="user"-->
+<!--                     select="com.meng.todolist.mapper.UserMapper.getUserByUId"-->
+<!--                     column="u_id">-->
+<!--        </association>-->
+    </resultMap>
+    <select id="getAllTasks" resultType="Task">
         select * from task
     </select>
-    <select id="getAllTaskByDate" resultType="Task">
-        select * from task where #{startTime} >= start_time and end_time >= #{startTime};
+    <select id="getAllTask" resultMap="getTaskWithUserWithType">
+        select * from task where u_id = #{uId}
+    </select>
+    <select id="getAllTaskByDate" resultMap="getTaskWithUserWithType">
+        select * from task where #{date} >= start_time and end_time >= #{date} and u_id = #{uId};
     </select>
     <delete id="deleteTaskById">
         delete from task where task_id = #{taskId}
     </delete>
     <insert id="insertTask" parameterType="com.meng.todolist.entity.Task" useGeneratedKeys="true" keyProperty="taskId">
-        insert into task values (#{task.name},#{task.status},#{task.startTime},#{task.endTime},null)
+        insert into task (name, status, start_time, end_time, type_id, u_id)values (#{task.name},#{task.status},#{task.startTime},#{task.endTime},#{task.typeId},#{task.uId})
     </insert>
     <update id="setStatus">
         update task set status = #{status} where task_id = #{taskId}
+    </update>
+    <update id="updateTask">
+        update task set task_name = #{taskName}, start_time = #{startTime}, end_time = #{endTime}, type_id = #{tapeId} where task_id = #{taskId}
+    </update>
+    <select id="getTaskByTaskId" resultMap="getTaskWithUserWithType">
+        select * from task where task_id = #{taskId}
+    </select>
+    <select id="getLastWeekTaskCompleted" resultType="java.lang.Integer">
+        select count(task_id) from task where task.end_time > date_sub(CURRENT_DATE(),interval 1 week ) and status = 1 and u_id = #{uId}
+    </select>
+    <select id="getLastWeekTaskUnCompleted" resultType="java.lang.Integer">
+        select count(task_id) from task where task.end_time > date_sub(CURRENT_DATE(),interval 1 week ) and status = 0 and u_id = #{uId}
+    </select>
+    <select id="getLastYearCompleted" resultType="java.lang.Integer">
+        select count(task_id) from task where task.end_time > date_sub(CURRENT_DATE(),interval 1 year ) and status = 1 and u_id = #{uId}
+    </select>
+    <select id="getLastYearTaskUnCompleted" resultType="java.lang.Integer">
+        select count(task_id) from task where task.end_time > date_sub(CURRENT_DATE(),interval 1 year ) and status = 0 and u_id = #{uId}
+    </select>
+    <select id="getLastMonthTaskCompleted" resultType="java.lang.Integer">
+        select count(task_id) from task where task.end_time > date_sub(CURRENT_DATE(),interval 1 month ) and status = 1 and u_id = #{uId}
+    </select>
+    <select id="getLastMonthTaskUnCompleted" resultType="java.lang.Integer">
+        select count(task_id) from task where task.end_time > date_sub(CURRENT_DATE(),interval 1 month ) and status = 0 and u_id = #{uId}
+    </select>
+    <select id="getEndTimeTasks" resultType="Task">
+        select * from task where end_time = #{endTime} and u_id = #{uId}
+    </select>
+    <update id="setExpired">
+        update task set expired = true where task_id = #{taskId}
     </update>
 </mapper>
